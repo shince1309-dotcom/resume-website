@@ -2,92 +2,159 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Resume Builder App</title>
+    <!-- Google Fonts & Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- html2pdf library for instant PDF downloading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* Importing a clean, modern font from Google */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: #fafafa; /* Soft off-white background */
-            color: #333;
-            margin: 0; 
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        nav { 
-            background-color: #ffffff; 
-            padding: 20px; 
-            width: 100%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Soft shadow under the nav */
-            text-align: center;
-            position: sticky;
-            top: 0;
-        }
-        
-        nav a { 
-            color: #555; 
-            text-decoration: none; 
-            margin: 0 20px; 
-            font-weight: 600; 
-            transition: color 0.3s ease; /* Smooth color change on hover */
-        }
-        
-        nav a:hover {
-            color: #ff6b6b; /* Accent color when you hover over links */
-        }
-        
-        .container {
-            margin-top: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .box { 
-            background: white; 
-            padding: 50px; 
-            border-radius: 20px; /* Highly rounded corners */
-            max-width: 600px; 
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Deep, soft floating shadow */
-            transition: transform 0.3s ease; /* Smooth floating animation */
-        }
-        
-        .box:hover {
-            transform: translateY(-5px); /* Makes the box float up slightly when hovered */
-        }
-        
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        
-        p {
-            font-size: 1.1em;
-            color: #777;
-            line-height: 1.6;
-        }
+        body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
-<body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="education.html">Education</a>
-        <a href="skills.html">Skills</a>
-        <a href="projects.html">Projects</a>
-    </nav>
-    
-    <div class="container">
-        <div class="box">
-            <h1>Hi, I'm Shince</h1>
-            <p>Welcome to my digital space. I am an IT student with a passion for building clean, modern, and engaging web experiences.</p>
-        </div>
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">TY BSc IT - Professional Resume Builder</h1>
+        <p class="text-gray-600 mt-1">Fill out the form below to instantly generate and download your professional resume.</p>
     </div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- LEFT SIDE: INPUT FORM -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 space-y-4">
+            <h2 class="text-xl font-semibold text-gray-700 border-b pb-2">Enter Your Details</h2>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Full Name</label>
+                <input type="text" id="formName" placeholder="e.g. Shince Shibu Scaria" oninput="updateResume()" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600">Email Address</label>
+                    <input type="email" id="formEmail" placeholder="shince@email.com" oninput="updateResume()" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600">Phone Number</label>
+                    <input type="text" id="formPhone" placeholder="+91 98765 43210" oninput="updateResume()" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Education & Degree</label>
+                <input type="text" id="formEdu" placeholder="TY BSc IT, St. Andrew's College" oninput="updateResume()" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Technical Skills (comma separated)</label>
+                <input type="text" id="formSkills" placeholder="HTML, Tailwind CSS, JavaScript, Git" oninput="updateResume()" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Professional Summary / Projects</label>
+                <textarea id="formSummary" rows="4" placeholder="Write a short summary or describe your key project..." oninput="updateResume()" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: LIVE PREVIEW & DOWNLOAD -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+                <span class="font-semibold text-gray-700">Live Preview</span>
+                <button onclick="downloadPDF()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-xl shadow transition duration-200 flex items-center gap-2">
+                    📥 Download PDF
+                </button>
+            </div>
+
+            <!-- The Printable Resume Box -->
+            <div id="resumePreview" class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 min-h-[600px] flex flex-col justify-between">
+                <div>
+                    <!-- Header -->
+                    <div class="border-b pb-4 mb-4">
+                        <h1 id="previewName" class="text-3xl font-bold text-gray-800">Your Name</h1>
+                        <p class="text-sm text-gray-500 mt-1">
+                            <span id="previewEmail">email@example.com</span> | <span id="previewPhone">+91 XXXXX XXXXX</span>
+                        </p>
+                    </div>
+
+                    <!-- Education Section -->
+                    <div class="mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-600 mb-1">Education</h3>
+                        <p id="previewEdu" class="text-gray-700 font-medium">TY BSc IT, St. Andrew's College</p>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-600 mb-1">Skills</h3>
+                        <div id="previewSkills" class="flex flex-wrap gap-2 mt-1">
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-lg text-sm">HTML</span>
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-lg text-sm">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <!-- Summary / Experience Section -->
+                    <div>
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-600 mb-1">Profile Summary</h3>
+                        <p id="previewSummary" class="text-gray-600 text-sm leading-relaxed">Your professional summary will appear here as you type...</p>
+                    </div>
+                </div>
+                
+                <div class="text-center text-xs text-gray-400 border-t pt-4">
+                    Generated via TY BSc IT Interactive Web App Portfolio
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Real-time App Logic -->
+    <script>
+        function updateResume() {
+            // Grab input values
+            const name = document.getElementById('formName').value;
+            const email = document.getElementById('formEmail').value;
+            const phone = document.getElementById('formPhone').value;
+            const edu = document.getElementById('formEdu').value;
+            const skills = document.getElementById('formSkills').value;
+            const summary = document.getElementById('formSummary').value;
+
+            // Update preview elements safely
+            document.getElementById('previewName').innerText = name || "Your Name";
+            document.getElementById('previewEmail').innerText = email || "email@example.com";
+            document.getElementById('previewPhone').innerText = phone || "+91 XXXXX XXXXX";
+            document.getElementById('previewEdu').innerText = edu || "TY BSc IT, St. Andrew's College";
+            document.getElementById('previewSummary').innerText = summary || "Your professional summary will appear here as you type...";
+
+            // Handle skills tag generation dynamically
+            const skillsContainer = document.getElementById('previewSkills');
+            skillsContainer.innerHTML = '';
+            if (skills) {
+                skills.split(',').forEach(skill => {
+                    if(skill.trim() !== "") {
+                        const span = document.createElement('span');
+                        span.className = "bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-sm font-medium";
+                        span.innerText = skill.trim();
+                        skillsContainer.appendChild(span);
+                    }
+                });
+            } else {
+                skillsContainer.innerHTML = '<span class="text-gray-400 text-sm">No skills added yet</span>';
+            }
+        }
+
+        // PDF Generation Function using html2pdf library
+        function downloadPDF() {
+            const element = document.getElementById('resumePreview');
+            const options = {
+                margin:       10,
+                filename:     'Shince_Resume.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(element).set(options).save();
+        }
+    </script>
 </body>
 </html>
