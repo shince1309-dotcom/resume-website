@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step 1: Welcome - Resume App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF.js Library for Real Parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Poppins', sans-serif; } </style>
 </head>
@@ -41,23 +43,59 @@
                 <p class="text-slate-500 mt-2">Enter your details manually.</p>
             </a>
 
+            <!-- REAL WORKING PDF PARSER -->
             <label class="bg-white border-2 border-transparent hover:border-emerald-600 p-8 rounded-2xl shadow-lg hover:shadow-xl transition flex flex-col items-center text-center cursor-pointer group relative">
                 <div class="bg-emerald-50 p-4 rounded-full mb-4 group-hover:bg-emerald-100 transition">
                     <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-900">Upload an existing resume</h3>
-                <p class="text-slate-500 mt-2">Format your documents instantly.</p>
-                <input type="file" accept=".pdf,.doc,.docx" class="hidden" onchange="handleUpload(this)">
+                <p class="text-slate-500 mt-2">Real client-side PDF text scanner.</p>
+                <input type="file" id="pdfFile" accept=".pdf" class="hidden" onchange="parsePDF(this)">
             </label>
         </div>
     </div>
 
     <script>
-        function handleUpload(input) {
-            if (input.files && input.files[0]) {
-                localStorage.setItem('uploadedFileName', input.files[0].name);
-                window.location.href = 'build.html';
-            }
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        async function parsePDF(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                try {
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    let fullText = "";
+                    
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(" ");
+                        fullText += pageText + "\n";
+                    }
+
+                    // Extract actual email and phone using Regex patterns
+                    const emailMatch = fullText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                    const phoneMatch = fullText.match(/(\+?\d{10,12}|\d{3}[-\.\s]\d{3}[-\.\s]\d{4})/);
+
+                    const extractedData = {
+                        email: emailMatch ? emailMatch[0] : "",
+                        phone: phoneMatch ? phoneMatch[0] : "",
+                        summary: fullText.trim().substring(0, 400) // Grabs text snippet for summary
+                    };
+
+                    localStorage.setItem('extractedResume', JSON.stringify(extractedData));
+                    alert("PDF successfully scanned and parsed! Redirecting to builder...");
+                    window.location.href = 'build.html';
+
+                } catch (error) {
+                    alert("Error reading PDF. Please try another file or start from scratch.");
+                    console.error(error);
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
     </script>
 </body>

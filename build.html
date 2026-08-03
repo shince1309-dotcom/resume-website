@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Job Title</label>
-                        <input type="text" id="title" placeholder="IT Student / Developer" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="title" placeholder="TY BSc IT Student" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                 </div>
                 
@@ -107,7 +107,6 @@
     <script>
         let base64Photo = "";
 
-        // Bulletproof image compressor so localStorage never chokes up on round two
         document.getElementById('photo').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -127,12 +126,16 @@
             reader.readAsDataURL(file);
         });
 
-        // FIXED: Upload no longer injects fake John Doe data. It extracts the file name and lets you type fresh!
+        // AUTO-POPULATE REAL SCANNED DATA
         window.onload = function() {
-            if(localStorage.getItem('uploadedFileName')) {
-                const fileName = localStorage.getItem('uploadedFileName');
-                alert(`Uploaded "${fileName}" successfully! Please fill in your details below to format it.`);
-                localStorage.removeItem('uploadedFileName');
+            const scannedData = JSON.parse(localStorage.getItem('extractedResume'));
+            if(scannedData) {
+                if(scannedData.email) document.getElementById('email').value = scannedData.email;
+                if(scannedData.phone) document.getElementById('phone').value = scannedData.phone;
+                if(scannedData.summary) document.getElementById('summary').value = scannedData.summary;
+                
+                localStorage.removeItem('extractedResume');
+                alert("Real data extracted from your PDF and populated into the form fields!");
             }
         }
 
@@ -154,7 +157,6 @@
                 photo: base64Photo 
             };
             
-            // Clean storage before saving to prevent second-time blocking
             localStorage.removeItem('resumeData');
             localStorage.setItem('resumeData', JSON.stringify(resumeData));
             window.location.href = 'preview.html';
