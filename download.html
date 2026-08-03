@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style> body { font-family: 'Poppins', sans-serif; } </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
@@ -19,66 +18,56 @@
     </nav>
 
     <div class="flex-grow flex flex-col items-center justify-center px-4">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Your Document is Ready!</h1>
-            <p class="text-slate-600">Click the button below to generate and save your final PDF.</p>
-        </div>
-
-        <button onclick="downloadFinalPDF()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl hover:bg-indigo-700 transition flex items-center gap-3">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            Download PDF
+        <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Export Your Document</h1>
+        <button onclick="downloadFinalPDF()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl hover:bg-indigo-700 transition">
+            📥 Download PDF
         </button>
 
-        <!-- Hidden Resume Format specifically for the PDF Engine to read -->
-        <div class="hidden">
-            <div id="pdfFormat" class="p-10 bg-white">
-                <div class="border-b-2 border-gray-200 pb-4 mb-4">
-                    <h1 id="pdfName" style="font-size: 28px; font-weight: bold;">Name</h1>
-                    <p style="color: gray;"><span id="pdfEmail">Email</span> | <span id="pdfPhone">Phone</span></p>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #4f46e5; font-size: 14px; font-weight: bold; text-transform: uppercase;">Education</h3>
-                    <p id="pdfEdu" style="font-size: 16px; font-weight: 600;">Edu</p>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #4f46e5; font-size: 14px; font-weight: bold; text-transform: uppercase;">Skills</h3>
-                    <p id="pdfSkills">Skills</p>
-                </div>
-                <div>
-                    <h3 style="color: #4f46e5; font-size: 14px; font-weight: bold; text-transform: uppercase;">Profile Summary</h3>
-                    <p id="pdfSummary">Summary</p>
-                </div>
-            </div>
-        </div>
+        <div id="pdfContainer" class="hidden absolute top-[-9999px]"></div>
     </div>
 
     <script>
         window.onload = function() {
             const data = JSON.parse(localStorage.getItem('resumeData'));
-            if(data) {
-                document.getElementById('pdfName').innerText = data.name;
-                document.getElementById('pdfEmail').innerText = data.email;
-                document.getElementById('pdfPhone').innerText = data.phone;
-                document.getElementById('pdfEdu').innerText = data.edu;
-                document.getElementById('pdfSkills').innerText = data.skills;
-                document.getElementById('pdfSummary').innerText = data.summary;
+            const container = document.getElementById('pdfContainer');
+            
+            if(data && data.template === 'classic') {
+                container.innerHTML = `
+                <div id="printArea" style="padding:40px; font-family:sans-serif; width:800px;">
+                    <h1 style="text-align:center; font-size:24px; text-decoration:underline;">RESUME</h1>
+                    <h2>${data.name}</h2><p>${data.address}</p><p>Mob No: ${data.phone}</p>
+                    <div style="background:#eee; padding:5px; font-weight:bold; margin-top:15px;">CAREER OBJECTIVE</div>
+                    <p style="margin-top:10px;">${data.summary}</p>
+                    <div style="background:#eee; padding:5px; font-weight:bold; margin-top:15px;">ACADEMIC QUALIFICATION</div>
+                    <p style="margin-top:10px;">${data.edu}</p>
+                    <div style="background:#eee; padding:5px; font-weight:bold; margin-top:15px;">WORK EXPERIENCE</div>
+                    <p style="margin-top:10px;">${data.experience}</p>
+                    <div style="background:#eee; padding:5px; font-weight:bold; margin-top:15px;">PERSONAL INFORMATION</div>
+                    <p style="margin-top:10px;">DOB: ${data.dob} | Languages: ${data.languages}</p>
+                </div>`;
+            } else if(data) {
+                container.innerHTML = `
+                <div id="printArea" style="display:flex; font-family:sans-serif; width:800px; min-height:1000px;">
+                    <div style="width:35%; background:#6b8e89; color:white; padding:40px;">
+                        <h3 style="margin-bottom:10px;">PROFILE</h3><p style="font-size:14px;">${data.summary}</p>
+                        <h3 style="margin-top:30px; margin-bottom:10px;">CONTACT</h3><p style="font-size:14px;">${data.phone}<br>${data.address}</p>
+                    </div>
+                    <div style="width:65%; padding:40px; background:white;">
+                        <h1 style="color:#6b8e89; font-size:35px; text-transform:uppercase;">${data.name}</h1>
+                        <h3 style="color:#6b8e89; margin-top:40px;">EDUCATION</h3><p>${data.edu}</p>
+                        <h3 style="color:#6b8e89; margin-top:30px;">LANGUAGES</h3><p>${data.languages}</p>
+                        <h3 style="color:#6b8e89; margin-top:30px;">EXPERIENCE</h3><p>${data.experience}</p>
+                    </div>
+                </div>`;
             }
         };
 
         function downloadFinalPDF() {
-            const element = document.getElementById('pdfFormat');
-            const options = {
-                margin: 15,
-                filename: 'Generated_Resume.pdf',
-                image: { type: 'jpeg', quality: 1.0 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            // Temporarily unhide to generate PDF, then hide again
-            element.parentElement.classList.remove('hidden');
-            html2pdf().from(element).set(options).save().then(() => {
-                element.parentElement.classList.add('hidden');
-            });
+            const element = document.getElementById('printArea');
+            document.getElementById('pdfContainer').classList.remove('hidden');
+            html2pdf().from(element).set({
+                margin: 0, filename: 'My_Resume_Export.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save().then(() => document.getElementById('pdfContainer').classList.add('hidden'));
         }
     </script>
 </body>

@@ -17,30 +17,52 @@
         <span>4. Download</span>
     </nav>
 
-    <div class="flex-grow flex items-center justify-center px-4 py-10">
-        <div class="max-w-2xl w-full bg-white p-10 rounded-2xl shadow-xl text-center border border-slate-200">
-            
-            <!-- Student Identity Section for the Teacher -->
-            <div class="mb-8 inline-block bg-indigo-50 border border-indigo-100 rounded-xl p-6 text-left w-full sm:w-3/4 shadow-sm">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-4 text-center border-b border-indigo-200 pb-2">Project Submitted By</h2>
-                <div class="space-y-3">
-                    <p class="text-slate-700 text-lg"><span class="font-bold text-slate-900">Name:</span> Shince Shibu Scaria</p>
-                    <p class="text-slate-700 text-lg"><span class="font-bold text-slate-900">Roll No:</span> 5250</p>
-                    <p class="text-slate-700 text-lg"><span class="font-bold text-slate-900">Class:</span> TY BSc IT</p>
-                    <p class="text-slate-700 text-lg"><span class="font-bold text-slate-900">College:</span> St. Andrew's College, Bandra West</p>
-                </div>
-            </div>
+    <div class="flex-grow flex flex-col items-center justify-center px-4 py-10">
+        
+        <div class="text-center mb-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Interactive <span class="text-indigo-600">Resume Builder</span></h1>
+            <p class="text-slate-500 mt-2 font-medium text-lg">GitHub Practical Assignment</p>
+        </div>
 
-            <h1 class="text-4xl font-extrabold text-slate-900 mt-2">Dynamic Resume Generator</h1>
-            <p class="text-slate-600 mt-4 text-lg leading-relaxed">
-                Welcome to my practical web application project. This app uses client-side rendering and local storage to seamlessly capture user data, format it into a professional layout, and export it directly as a PDF.
-            </p>
-            
-            <div class="mt-8">
-                <a href="build.html" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">Start Building 🚀</a>
-            </div>
+        <div class="mb-10 bg-white border border-indigo-100 rounded-2xl p-5 text-center shadow-md w-full max-w-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
+            <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-3">Project Submitted By</h2>
+            <p class="text-slate-800 font-bold text-xl">Shince Shibu Scaria</p>
+            <p class="text-slate-600 font-medium mt-1">Roll No: 5250 | TY BSc IT | St. Andrew's College</p>
+        </div>
+
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">How would you like to start?</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+            <!-- Start from Scratch Card -->
+            <a href="build.html" class="bg-white border-2 border-transparent hover:border-indigo-600 p-8 rounded-2xl shadow-lg hover:shadow-xl transition flex flex-col items-center text-center cursor-pointer group">
+                <div class="bg-indigo-50 p-4 rounded-full mb-4 group-hover:bg-indigo-100 transition">
+                    <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Start from scratch</h3>
+                <p class="text-slate-500 mt-2">We'll help you build it step-by-step.</p>
+            </a>
+
+            <!-- Upload Existing Card -->
+            <label for="file-upload" class="bg-white border-2 border-transparent hover:border-emerald-600 p-8 rounded-2xl shadow-lg hover:shadow-xl transition flex flex-col items-center text-center cursor-pointer group relative">
+                <div class="bg-emerald-50 p-4 rounded-full mb-4 group-hover:bg-emerald-100 transition">
+                    <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Upload an existing resume</h3>
+                <p class="text-slate-500 mt-2">We'll format and fill it out for you.</p>
+                <input id="file-upload" type="file" accept=".pdf,.doc,.docx" class="hidden" onchange="handleUpload(this)">
+            </label>
         </div>
     </div>
 
+    <script>
+        function handleUpload(input) {
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                alert(`Scanning document: ${fileName}...\n\nNote for practical assessment: As this is a client-side architecture hosted on GitHub Pages, backend PDF text extraction is disabled. Redirecting to manual data entry layout.`);
+                window.location.href = 'build.html';
+            }
+        }
+    </script>
 </body>
 </html>
