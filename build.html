@@ -20,7 +20,6 @@
     <div class="flex-grow flex items-center justify-center px-4 py-10">
         <div class="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-xl border border-slate-200">
             
-            <!-- TEMPLATES ARE BACK! -->
             <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-2">1. Choose Template</h2>
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <label class="border-2 border-slate-200 rounded-xl p-4 cursor-pointer hover:border-indigo-500 flex items-center gap-3">
@@ -44,41 +43,41 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Full Name</label>
-                        <input type="text" id="name" placeholder="Max Johnson" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="name" placeholder="Shince Shibu Scaria" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Job Title</label>
-                        <input type="text" id="title" placeholder="UX Designer" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="title" placeholder="IT Student / Developer" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Phone</label>
-                        <input type="text" id="phone" placeholder="+1 2345 6789" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="phone" placeholder="+91 XXXXXXXXXX" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Email</label>
-                        <input type="email" id="email" placeholder="max@email.com" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="email" id="email" placeholder="shince@email.com" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Location</label>
-                        <input type="text" id="address" placeholder="New York, USA" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="address" placeholder="Nalasopara West" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700">Skills (Comma separated)</label>
-                        <input type="text" id="skills" placeholder="Figma, Sketch, UI/UX" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <label class="block text-sm font-semibold text-slate-700">Skills</label>
+                        <input type="text" id="skills" placeholder="HTML, JavaScript, Git" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Languages</label>
-                        <input type="text" id="languages" placeholder="English, French" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="languages" placeholder="English, Hindi, Marathi" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Hobbies</label>
-                        <input type="text" id="hobbies" placeholder="Photography, Cooking" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
+                        <input type="text" id="hobbies" placeholder="Coding, Fitness" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg">
                     </div>
                 </div>
 
@@ -90,16 +89,16 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Work Experience</label>
-                        <textarea id="experience" rows="3" placeholder="Senior UX Designer - ABC Tech..." class="w-full mt-1 p-3 bg-slate-50 border rounded-lg"></textarea>
+                        <textarea id="experience" rows="3" placeholder="Fresher or Project Work..." class="w-full mt-1 p-3 bg-slate-50 border rounded-lg"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700">Education</label>
-                        <textarea id="edu" rows="3" placeholder="Master of Science in HCI - NYU..." class="w-full mt-1 p-3 bg-slate-50 border rounded-lg"></textarea>
+                        <textarea id="edu" rows="3" placeholder="TY BSc IT, St. Andrew's College" class="w-full mt-1 p-3 bg-slate-50 border rounded-lg"></textarea>
                     </div>
                 </div>
 
                 <div class="mt-8 text-right">
-                    <button onclick="saveData()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold shadow hover:bg-indigo-700 transition">Generate Premium Resume ➔</button>
+                    <button onclick="saveData()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold shadow hover:bg-indigo-700 transition">Generate Resume ➔</button>
                 </div>
             </div>
         </div>
@@ -108,29 +107,32 @@
     <script>
         let base64Photo = "";
 
+        // Bulletproof image compressor so localStorage never chokes up on round two
         document.getElementById('photo').addEventListener('change', function(e) {
             const file = e.target.files[0];
+            if (!file) return;
             const reader = new FileReader();
-            reader.onloadend = function() { base64Photo = reader.result; }
-            if(file) { reader.readAsDataURL(file); }
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 150;
+                    canvas.height = 150;
+                    ctx.drawImage(img, 0, 0, 150, 150);
+                    base64Photo = canvas.toDataURL('image/jpeg', 0.7);
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
         });
 
+        // FIXED: Upload no longer injects fake John Doe data. It extracts the file name and lets you type fresh!
         window.onload = function() {
-            if(localStorage.getItem('demoUpload') === 'true') {
-                document.getElementById('name').value = "John Doe";
-                document.getElementById('title').value = "Software Engineer";
-                document.getElementById('phone').value = "+91 9876543210";
-                document.getElementById('email').value = "john.doe@email.com";
-                document.getElementById('address').value = "Mumbai, India";
-                document.getElementById('skills').value = "HTML, CSS, JavaScript";
-                document.getElementById('languages').value = "English, Hindi, Marathi";
-                document.getElementById('hobbies').value = "Coding, Chess";
-                document.getElementById('summary').value = "Highly motivated software engineer with experience in building web applications.";
-                document.getElementById('experience').value = "Frontend Developer at Tech Corp (2024-Present)";
-                document.getElementById('edu').value = "TY BSc IT, St. Andrew's College";
-                
-                localStorage.removeItem('demoUpload');
-                alert("Form successfully auto-filled using Mock AI Parser!");
+            if(localStorage.getItem('uploadedFileName')) {
+                const fileName = localStorage.getItem('uploadedFileName');
+                alert(`Uploaded "${fileName}" successfully! Please fill in your details below to format it.`);
+                localStorage.removeItem('uploadedFileName');
             }
         }
 
@@ -138,19 +140,22 @@
             const selectedTemplate = document.querySelector('input[name="template"]:checked').value;
             const resumeData = {
                 template: selectedTemplate,
-                name: document.getElementById('name').value || 'Shince Scaria',
-                title: document.getElementById('title').value || 'Web Developer',
+                name: document.getElementById('name').value || 'Shince Shibu Scaria',
+                title: document.getElementById('title').value || 'TY BSc IT Student',
                 phone: document.getElementById('phone').value || '+91 00000 00000',
                 email: document.getElementById('email').value || 'shince@email.com',
-                address: document.getElementById('address').value || 'Maharashtra, India',
-                skills: document.getElementById('skills').value || 'HTML, Tailwind, JS',
-                languages: document.getElementById('languages').value || 'English, Hindi',
+                address: document.getElementById('address').value || 'Nalasopara West, Mumbai',
+                skills: document.getElementById('skills').value || 'HTML, Tailwind, JavaScript, Git',
+                languages: document.getElementById('languages').value || 'English, Hindi, Marathi',
                 hobbies: document.getElementById('hobbies').value || 'Coding, Reading',
                 summary: document.getElementById('summary').value || 'Passionate IT student building modern web applications.',
                 experience: document.getElementById('experience').value || 'Fresher / College Projects',
-                edu: document.getElementById('edu').value || 'TY BSc IT - St. Andrews College',
+                edu: document.getElementById('edu').value || 'TY BSc IT - St. Andrew\'s College',
                 photo: base64Photo 
             };
+            
+            // Clean storage before saving to prevent second-time blocking
+            localStorage.removeItem('resumeData');
             localStorage.setItem('resumeData', JSON.stringify(resumeData));
             window.location.href = 'preview.html';
         }

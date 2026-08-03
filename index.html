@@ -46,8 +46,8 @@
                     <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-900">Upload an existing resume</h3>
-                <p class="text-slate-500 mt-2">Auto-fill form using Mock AI Demo.</p>
-                <input type="file" accept=".pdf" class="hidden" onchange="handleUpload(this)">
+                <p class="text-slate-500 mt-2">Format your documents instantly.</p>
+                <input type="file" accept=".pdf,.doc,.docx" class="hidden" onchange="handleUpload(this)">
             </label>
         </div>
     </div>
@@ -55,8 +55,7 @@
     <script>
         function handleUpload(input) {
             if (input.files && input.files[0]) {
-                alert(`Scanning ${input.files[0].name}...\n\nExtracting text... Redirecting to builder.`);
-                localStorage.setItem('demoUpload', 'true');
+                localStorage.setItem('uploadedFileName', input.files[0].name);
                 window.location.href = 'build.html';
             }
         }
