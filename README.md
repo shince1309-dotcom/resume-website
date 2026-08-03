@@ -61,6 +61,12 @@ git clone [https://github.com/shince1309-dotcom/resume-website.git](https://gith
 **3. Premium Resume Preview**
 ![Final Output](images/preview.png)
 
+**4. Download page**
+![Download](images/download.png)
+
+**5. Resume pdf**
+![Resume pdf](images/resume pdf.png)
+
 
 🤖 AI Usage Disclosure
 Transparency note per department guidelines:
