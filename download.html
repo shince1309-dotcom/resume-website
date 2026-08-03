@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 4: Download - Resume App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style> body { font-family: 'Poppins', sans-serif; } </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-sm py-4 px-8 sticky top-0 z-50 flex justify-center gap-8 text-sm font-semibold text-slate-400">
+        <a href="index.html" class="hover:text-indigo-600 transition">1. Intro</a>
+        <a href="build.html" class="hover:text-indigo-600 transition">2. Build</a>
+        <a href="preview.html" class="hover:text-indigo-600 transition">3. Preview</a>
+        <span class="text-indigo-600 border-b-2 border-indigo-600 pb-1">4. Download</span>
+    </nav>
+
+    <div class="flex-grow flex flex-col items-center justify-center px-4">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Your Document is Ready!</h1>
+            <p class="text-slate-600">Click the button below to generate and save your final PDF.</p>
+        </div>
+
+        <button onclick="downloadFinalPDF()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl hover:bg-indigo-700 transition flex items-center gap-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Download PDF
+        </button>
+
+        <!-- Hidden Resume Format specifically for the PDF Engine to read -->
+        <div class="hidden">
+            <div id="pdfFormat" class="p-10 bg-white">
+                <div class="border-b-2 border-gray-200 pb-4 mb-4">
+                    <h1 id="pdfName" style="font-size: 28px; font-weight: bold;">Name</h1>
+                    <p style="color: gray;"><span id="pdfEmail">Email</span> | <span id="pdfPhone">Phone</span></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #4f46e5; font-size: 14px; font-weight: bold; text-transform: uppercase;">Education</h3>
+                    <p id="pdfEdu" style="font-size: 16px; font-weight: 600;">Edu</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #4f46e5; font-size: 14px; font-weight: bold; text-transform: uppercase;">Skills</h3>
+                    <p id="pdfSkills">Skills</p>
+                </div>
+                <div>
+                    <h3 style="color: #4f46e5; font-size: 14px; font-weight: bold; text-transform: uppercase;">Profile Summary</h3>
+                    <p id="pdfSummary">Summary</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const data = JSON.parse(localStorage.getItem('resumeData'));
+            if(data) {
+                document.getElementById('pdfName').innerText = data.name;
+                document.getElementById('pdfEmail').innerText = data.email;
+                document.getElementById('pdfPhone').innerText = data.phone;
+                document.getElementById('pdfEdu').innerText = data.edu;
+                document.getElementById('pdfSkills').innerText = data.skills;
+                document.getElementById('pdfSummary').innerText = data.summary;
+            }
+        };
+
+        function downloadFinalPDF() {
+            const element = document.getElementById('pdfFormat');
+            const options = {
+                margin: 15,
+                filename: 'Generated_Resume.pdf',
+                image: { type: 'jpeg', quality: 1.0 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            // Temporarily unhide to generate PDF, then hide again
+            element.parentElement.classList.remove('hidden');
+            html2pdf().from(element).set(options).save().then(() => {
+                element.parentElement.classList.add('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
