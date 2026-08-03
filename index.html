@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step 1: Welcome - Resume App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- pdf.js for full document text scanning -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Poppins', sans-serif; } </style>
 </head>
@@ -42,58 +43,70 @@
                 <p class="text-slate-500 mt-2">Enter your details manually.</p>
             </a>
 
-            <!-- 100% WORKING HYBRID PARSER -->
             <label class="bg-white border-2 border-transparent hover:border-emerald-600 p-8 rounded-2xl shadow-lg hover:shadow-xl transition flex flex-col items-center text-center cursor-pointer group relative">
                 <div class="bg-emerald-50 p-4 rounded-full mb-4 group-hover:bg-emerald-100 transition">
                     <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-900">Upload an existing resume</h3>
-                <p class="text-slate-500 mt-2">Auto-extract and parse data instantly.</p>
-                <input type="file" id="pdfFile" accept=".pdf" class="hidden" onchange="parsePDF(this)">
+                <p class="text-slate-500 mt-2">Extract full text & details from PDF.</p>
+                <input type="file" id="pdfFile" accept=".pdf" class="hidden" onchange="parseFullPDF(this)">
             </label>
         </div>
     </div>
 
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        async function parsePDF(input) {
+        async function parseFullPDF(input) {
             const file = input.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = async function() {
-                const typedarray = new Uint8Array(this.result);
-                let fullText = "";
-
                 try {
+                    const typedarray = new Uint8Array(this.result);
                     const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    let extractedText = "";
+
+                    // Extract text from every single page of the PDF
                     for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i);
                         const textContent = await page.getTextContent();
-                        fullText += textContent.items.map(item => item.str).join(" ") + "\n";
+                        const pageText = textContent.items.map(item => item.str).join(" ");
+                        extractedText += pageText + "\n\n";
                     }
-                } catch (e) {
-                    console.log("Canvas PDF fallback triggered");
+
+                    if (!extractedText.trim()) {
+                        alert("Note: This PDF has no selectable text layer (it might be an image/scan). Please use a text-based PDF.");
+                        return;
+                    }
+
+                    // Scan for email and phone using RegEx
+                    const emailMatch = extractedText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                    const phoneMatch = extractedText.match(/(\+?\d{10,12}|\d{3}[-\.\s]\d{3}[-\.\s]\d{4})/);
+
+                    // Split text lines to fill out different sections
+                    const lines = extractedText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+                    const extractedData = {
+                        rawFullText: extractedText,
+                        name: lines[0] || "Extracted Candidate",
+                        email: emailMatch ? emailMatch[0] : "",
+                        phone: phoneMatch ? phoneMatch[0] : "",
+                        summary: extractedText.slice(0, 300),
+                        experience: extractedText.slice(300, 700),
+                        edu: extractedText.slice(700, 1100)
+                    };
+
+                    localStorage.setItem('extractedResume', JSON.stringify(extractedData));
+                    alert("PDF Full Text Extracted Successfully! Filling form...");
+                    window.location.href = 'build.html';
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Unable to read PDF text. Redirecting to manual builder.");
+                    window.location.href = 'build.html';
                 }
-
-                // Extract data or use smart filename fallback so it NEVER fails
-                const emailMatch = fullText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-                const phoneMatch = fullText.match(/(\+?\d{10,12}|\d{3}[-\.\s]\d{3}[-\.\s]\d{4})/);
-
-                const cleanFileName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
-                const formattedName = cleanFileName.charAt(0).toUpperCase() + cleanFileName.slice(1);
-
-                const extractedData = {
-                    name: formattedName !== "Resume" ? formattedName : "Shince Shibu Scaria",
-                    email: emailMatch ? emailMatch[0] : `${cleanFileName.toLowerCase().replace(/\s+/g, ".")}@email.com`,
-                    phone: phoneMatch ? phoneMatch[0] : "+91 98765 43210",
-                    summary: fullText.trim().length > 20 ? fullText.trim().substring(0, 350) : "Experienced IT professional specializing in modern web application development and software engineering."
-                };
-
-                localStorage.setItem('extractedResume', JSON.stringify(extractedData));
-                alert("Resume successfully scanned and parsed! Loading into builder...");
-                window.location.href = 'build.html';
             };
             reader.readAsArrayBuffer(file);
         }

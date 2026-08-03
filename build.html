@@ -126,14 +126,16 @@
             reader.readAsDataURL(file);
         });
 
-        // AUTO-POPULATE SCANNED DATA
+        // POPULATE ALL EXTRACTED PDF TEXT INTO FORM
         window.onload = function() {
             const scannedData = JSON.parse(localStorage.getItem('extractedResume'));
-            if(scannedData) {
-                if(scannedData.name) document.getElementById('name').value = scannedData.name;
-                if(scannedData.email) document.getElementById('email').value = scannedData.email;
-                if(scannedData.phone) document.getElementById('phone').value = scannedData.phone;
-                if(scannedData.summary) document.getElementById('summary').value = scannedData.summary;
+            if (scannedData) {
+                if (scannedData.name) document.getElementById('name').value = scannedData.name;
+                if (scannedData.email) document.getElementById('email').value = scannedData.email;
+                if (scannedData.phone) document.getElementById('phone').value = scannedData.phone;
+                if (scannedData.summary) document.getElementById('summary').value = scannedData.summary;
+                if (scannedData.experience) document.getElementById('experience').value = scannedData.experience;
+                if (scannedData.edu) document.getElementById('edu').value = scannedData.edu;
                 
                 localStorage.removeItem('extractedResume');
             }
