@@ -126,16 +126,16 @@
             reader.readAsDataURL(file);
         });
 
-        // AUTO-POPULATE REAL SCANNED DATA
+        // AUTO-POPULATE SCANNED DATA
         window.onload = function() {
             const scannedData = JSON.parse(localStorage.getItem('extractedResume'));
             if(scannedData) {
+                if(scannedData.name) document.getElementById('name').value = scannedData.name;
                 if(scannedData.email) document.getElementById('email').value = scannedData.email;
                 if(scannedData.phone) document.getElementById('phone').value = scannedData.phone;
                 if(scannedData.summary) document.getElementById('summary').value = scannedData.summary;
                 
                 localStorage.removeItem('extractedResume');
-                alert("Real data extracted from your PDF and populated into the form fields!");
             }
         }
 
