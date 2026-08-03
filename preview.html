@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step 3: Preview - Resume App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Roboto', sans-serif; } </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
@@ -18,54 +19,90 @@
 
     <div class="flex-grow flex flex-col items-center justify-center px-4 py-10 w-full">
         
-        <!-- Classic Template Wrapper -->
+        <!-- 1. CLASSIC TEMPLATE -->
         <div id="classicTemplate" class="hidden max-w-3xl w-full bg-white p-10 shadow-2xl border border-slate-200">
-            <h1 class="text-center font-bold text-xl mb-4 underline">RESUME</h1>
-            <h2 id="cName" class="text-xl font-bold">Name</h2>
-            <p id="cAddress" class="text-sm">Address</p>
-            <p class="text-sm">Mob No: <span id="cPhone"></span></p>
-            
-            <div class="mt-4 bg-gray-200 p-1 font-bold text-sm uppercase">Career Objective</div>
-            <p id="cSummary" class="text-sm mt-2">Objective</p>
+            <div class="flex justify-between items-center border-b-4 border-slate-800 pb-6 mb-6">
+                <div>
+                    <h1 id="cName" class="text-4xl font-extrabold uppercase">Name</h1>
+                    <h2 id="cTitle" class="text-xl text-slate-600 mt-1">Job Title</h2>
+                    <div class="mt-3 text-sm text-slate-600 space-y-1">
+                        <p>📍 <span id="cAddress">Address</span></p>
+                        <p>📞 <span id="cPhone">Phone</span></p>
+                        <p>✉️ <span id="cEmail">Email</span></p>
+                    </div>
+                </div>
+                <div>
+                    <img id="cPhoto" src="https://via.placeholder.com/120" class="w-32 h-32 object-cover border-2 border-slate-300">
+                </div>
+            </div>
 
-            <div class="mt-4 bg-gray-200 p-1 font-bold text-sm uppercase">Academic Qualification</div>
-            <table class="w-full text-sm mt-2 border-collapse border border-gray-400">
-                <tr class="border border-gray-400 bg-gray-50"><th class="border border-gray-400 p-1">Qualification</th><th class="border border-gray-400 p-1">University/Board</th></tr>
-                <tr><td id="cEdu" class="border border-gray-400 p-1 text-center">Edu</td><td class="border border-gray-400 p-1 text-center">Maharashtra Board</td></tr>
-            </table>
+            <div class="mb-6">
+                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Professional Summary</h3>
+                <p id="cSummary" class="text-sm">Summary</p>
+            </div>
 
-            <div class="mt-4 bg-gray-200 p-1 font-bold text-sm uppercase">Work Experience</div>
-            <ul class="list-disc pl-5 mt-2 text-sm"><li id="cExp">Fresher</li></ul>
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div>
+                    <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Skills</h3>
+                    <ul id="cSkills" class="list-disc pl-5 text-sm"></ul>
+                </div>
+                <div>
+                    <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Languages</h3>
+                    <ul id="cLang" class="list-disc pl-5 text-sm"></ul>
+                </div>
+            </div>
 
-            <div class="mt-4 bg-gray-200 p-1 font-bold text-sm uppercase">Personal Information</div>
-            <div class="text-sm mt-2 grid grid-cols-2 gap-2">
-                <p><strong>Date of Birth:</strong> <span id="cDob"></span></p>
-                <p><strong>Language Known:</strong> <span id="cLang"></span></p>
+            <div class="mb-6">
+                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Work Experience</h3>
+                <p id="cExp" class="text-sm whitespace-pre-line">Exp</p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Education</h3>
+                <p id="cEdu" class="text-sm whitespace-pre-line">Edu</p>
+            </div>
+
+            <div>
+                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Hobbies</h3>
+                <p id="cHobbies" class="text-sm">Hobbies</p>
             </div>
         </div>
 
-        <!-- Modern Template Wrapper -->
-        <div id="modernTemplate" class="hidden max-w-4xl w-full bg-white shadow-2xl flex min-h-[600px]">
-            <div class="w-1/3 bg-[#6b8e89] text-white p-8">
-                <div class="w-32 h-32 bg-white rounded-2xl mb-6 flex items-center justify-center text-[#6b8e89] font-bold">PHOTO</div>
-                <h3 class="font-bold text-lg mb-2 uppercase">Profile</h3>
-                <p id="mSummary" class="text-sm mb-6 text-gray-100">Profile summary</p>
-                
-                <h3 class="font-bold text-lg mb-2 uppercase">Contact</h3>
+        <!-- 2. MODERN TEMPLATE -->
+        <div id="modernTemplate" class="hidden w-full max-w-4xl bg-white shadow-2xl flex min-h-[800px]">
+            <div class="w-[35%] bg-[#1a2332] text-white p-8">
+                <div class="flex justify-center mb-10">
+                    <img id="mPhoto" src="https://via.placeholder.com/150" alt="Profile" class="w-40 h-40 rounded-full object-cover border-4 border-slate-500 bg-white">
+                </div>
+                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Contact</h3>
+                <p class="text-xs text-slate-400 font-bold uppercase mt-3">Address</p>
+                <p id="mAddress" class="text-sm mb-2">Location</p>
+                <p class="text-xs text-slate-400 font-bold uppercase mt-3">Phone</p>
                 <p id="mPhone" class="text-sm mb-2">Phone</p>
-                <p id="mAddress" class="text-sm">Address</p>
+                <p class="text-xs text-slate-400 font-bold uppercase mt-3">Email</p>
+                <p id="mEmail" class="text-sm mb-8 break-all">Email</p>
+
+                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Skills</h3>
+                <ul id="mSkills" class="list-disc pl-5 text-sm space-y-1 mb-8"></ul>
+
+                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Languages</h3>
+                <ul id="mLang" class="list-disc pl-5 text-sm space-y-1 mb-8"></ul>
+
+                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Hobbies</h3>
+                <ul id="mHobbies" class="list-disc pl-5 text-sm space-y-1"></ul>
             </div>
-            <div class="w-2/3 p-8">
-                <h1 id="mName" class="text-4xl font-extrabold text-[#6b8e89] uppercase tracking-wider mb-8">Name</h1>
+            <div class="w-[65%] p-10">
+                <h1 id="mName" class="text-5xl font-bold text-slate-900 uppercase tracking-wide">Name</h1>
+                <h2 id="mTitle" class="text-2xl text-slate-600 mt-2 mb-10">Job Title</h2>
                 
-                <h3 class="font-bold text-[#6b8e89] text-lg flex items-center gap-2 mb-2 uppercase">▶ Education</h3>
-                <p id="mEdu" class="font-bold text-gray-800 text-sm mb-6">Edu</p>
+                <h3 class="font-bold text-2xl text-slate-800 mb-3 border-b-2 border-slate-200 pb-1">Profile</h3>
+                <p id="mSummary" class="text-sm text-slate-700 leading-relaxed mb-8">Profile text</p>
 
-                <h3 class="font-bold text-[#6b8e89] text-lg flex items-center gap-2 mb-2 uppercase">▶ Languages</h3>
-                <p id="mLang" class="text-gray-700 text-sm mb-6">Languages</p>
+                <h3 class="font-bold text-2xl text-slate-800 mb-3 border-b-2 border-slate-200 pb-1">Work Experience</h3>
+                <p id="mExp" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line mb-8">Experience text</p>
 
-                <h3 class="font-bold text-[#6b8e89] text-lg flex items-center gap-2 mb-2 uppercase">▶ Work Experience</h3>
-                <p id="mExp" class="text-gray-700 text-sm">Experience</p>
+                <h3 class="font-bold text-2xl text-slate-800 mb-3 border-b-2 border-slate-200 pb-1">Education</h3>
+                <p id="mEdu" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">Education text</p>
             </div>
         </div>
 
@@ -81,22 +118,35 @@
                 if(data.template === 'classic') {
                     document.getElementById('classicTemplate').classList.remove('hidden');
                     document.getElementById('cName').innerText = data.name;
+                    document.getElementById('cTitle').innerText = data.title;
                     document.getElementById('cAddress').innerText = data.address;
                     document.getElementById('cPhone').innerText = data.phone;
+                    document.getElementById('cEmail').innerText = data.email;
                     document.getElementById('cSummary').innerText = data.summary;
-                    document.getElementById('cEdu').innerText = data.edu;
                     document.getElementById('cExp').innerText = data.experience;
-                    document.getElementById('cDob').innerText = data.dob;
-                    document.getElementById('cLang').innerText = data.languages;
+                    document.getElementById('cEdu').innerText = data.edu;
+                    document.getElementById('cHobbies').innerText = data.hobbies;
+                    
+                    if(data.photo) document.getElementById('cPhoto').src = data.photo;
+                    
+                    document.getElementById('cSkills').innerHTML = data.skills.split(',').map(s => `<li>${s.trim()}</li>`).join('');
+                    document.getElementById('cLang').innerHTML = data.languages.split(',').map(l => `<li>${l.trim()}</li>`).join('');
                 } else {
                     document.getElementById('modernTemplate').classList.remove('hidden');
                     document.getElementById('mName').innerText = data.name;
+                    document.getElementById('mTitle').innerText = data.title;
                     document.getElementById('mAddress').innerText = data.address;
                     document.getElementById('mPhone').innerText = data.phone;
+                    document.getElementById('mEmail').innerText = data.email;
                     document.getElementById('mSummary').innerText = data.summary;
-                    document.getElementById('mEdu').innerText = data.edu;
-                    document.getElementById('mLang').innerText = data.languages;
                     document.getElementById('mExp').innerText = data.experience;
+                    document.getElementById('mEdu').innerText = data.edu;
+                    
+                    if(data.photo) document.getElementById('mPhoto').src = data.photo;
+                    
+                    document.getElementById('mSkills').innerHTML = data.skills.split(',').map(s => `<li>${s.trim()}</li>`).join('');
+                    document.getElementById('mLang').innerHTML = data.languages.split(',').map(l => `<li>${l.trim()}</li>`).join('');
+                    document.getElementById('mHobbies').innerHTML = data.hobbies.split(',').map(h => `<li>${h.trim()}</li>`).join('');
                 }
             }
         };
