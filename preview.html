@@ -19,91 +19,8 @@
 
     <div class="flex-grow flex flex-col items-center justify-center px-4 py-10 w-full">
         
-        <!-- 1. CLASSIC TEMPLATE -->
-        <div id="classicTemplate" class="hidden max-w-3xl w-full bg-white p-10 shadow-2xl border border-slate-200">
-            <div class="flex justify-between items-center border-b-4 border-slate-800 pb-6 mb-6">
-                <div>
-                    <h1 id="cName" class="text-4xl font-extrabold uppercase">Name</h1>
-                    <h2 id="cTitle" class="text-xl text-slate-600 mt-1">Job Title</h2>
-                    <div class="mt-3 text-sm text-slate-600 space-y-1">
-                        <p>📍 <span id="cAddress">Address</span></p>
-                        <p>📞 <span id="cPhone">Phone</span></p>
-                        <p>✉️ <span id="cEmail">Email</span></p>
-                    </div>
-                </div>
-                <div>
-                    <img id="cPhoto" src="https://via.placeholder.com/120" class="w-32 h-32 object-cover border-2 border-slate-300">
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Professional Summary</h3>
-                <p id="cSummary" class="text-sm">Summary</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6 mb-6">
-                <div>
-                    <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Skills</h3>
-                    <ul id="cSkills" class="list-disc pl-5 text-sm"></ul>
-                </div>
-                <div>
-                    <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Languages</h3>
-                    <ul id="cLang" class="list-disc pl-5 text-sm"></ul>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Work Experience</h3>
-                <p id="cExp" class="text-sm whitespace-pre-line">Exp</p>
-            </div>
-
-            <div class="mb-6">
-                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Education</h3>
-                <p id="cEdu" class="text-sm whitespace-pre-line">Edu</p>
-            </div>
-
-            <div>
-                <h3 class="bg-slate-200 p-1 font-bold uppercase text-sm mb-2">Hobbies</h3>
-                <p id="cHobbies" class="text-sm">Hobbies</p>
-            </div>
-        </div>
-
-        <!-- 2. MODERN TEMPLATE -->
-        <div id="modernTemplate" class="hidden w-full max-w-4xl bg-white shadow-2xl flex min-h-[800px]">
-            <div class="w-[35%] bg-[#1a2332] text-white p-8">
-                <div class="flex justify-center mb-10">
-                    <img id="mPhoto" src="https://via.placeholder.com/150" alt="Profile" class="w-40 h-40 rounded-full object-cover border-4 border-slate-500 bg-white">
-                </div>
-                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Contact</h3>
-                <p class="text-xs text-slate-400 font-bold uppercase mt-3">Address</p>
-                <p id="mAddress" class="text-sm mb-2">Location</p>
-                <p class="text-xs text-slate-400 font-bold uppercase mt-3">Phone</p>
-                <p id="mPhone" class="text-sm mb-2">Phone</p>
-                <p class="text-xs text-slate-400 font-bold uppercase mt-3">Email</p>
-                <p id="mEmail" class="text-sm mb-8 break-all">Email</p>
-
-                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Skills</h3>
-                <ul id="mSkills" class="list-disc pl-5 text-sm space-y-1 mb-8"></ul>
-
-                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Languages</h3>
-                <ul id="mLang" class="list-disc pl-5 text-sm space-y-1 mb-8"></ul>
-
-                <h3 class="font-bold text-xl mb-4 border-b border-slate-600 pb-1">Hobbies</h3>
-                <ul id="mHobbies" class="list-disc pl-5 text-sm space-y-1"></ul>
-            </div>
-            <div class="w-[65%] p-10">
-                <h1 id="mName" class="text-5xl font-bold text-slate-900 uppercase tracking-wide">Name</h1>
-                <h2 id="mTitle" class="text-2xl text-slate-600 mt-2 mb-10">Job Title</h2>
-                
-                <h3 class="font-bold text-2xl text-slate-800 mb-3 border-b-2 border-slate-200 pb-1">Profile</h3>
-                <p id="mSummary" class="text-sm text-slate-700 leading-relaxed mb-8">Profile text</p>
-
-                <h3 class="font-bold text-2xl text-slate-800 mb-3 border-b-2 border-slate-200 pb-1">Work Experience</h3>
-                <p id="mExp" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line mb-8">Experience text</p>
-
-                <h3 class="font-bold text-2xl text-slate-800 mb-3 border-b-2 border-slate-200 pb-1">Education</h3>
-                <p id="mEdu" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">Education text</p>
-            </div>
+        <!-- The Preview Container (Now uses the same bulletproof engine as the Download page) -->
+        <div id="previewContainer" class="w-full max-w-4xl bg-white shadow-2xl overflow-hidden flex justify-center border border-slate-200">
         </div>
 
         <div class="mt-8">
@@ -114,40 +31,85 @@
     <script>
         window.onload = function() {
             const data = JSON.parse(localStorage.getItem('resumeData'));
-            if(data) {
-                if(data.template === 'classic') {
-                    document.getElementById('classicTemplate').classList.remove('hidden');
-                    document.getElementById('cName').innerText = data.name;
-                    document.getElementById('cTitle').innerText = data.title;
-                    document.getElementById('cAddress').innerText = data.address;
-                    document.getElementById('cPhone').innerText = data.phone;
-                    document.getElementById('cEmail').innerText = data.email;
-                    document.getElementById('cSummary').innerText = data.summary;
-                    document.getElementById('cExp').innerText = data.experience;
-                    document.getElementById('cEdu').innerText = data.edu;
-                    document.getElementById('cHobbies').innerText = data.hobbies;
+            const container = document.getElementById('previewContainer');
+            
+            if(!data) {
+                container.innerHTML = `<p class="p-10 font-bold text-red-500">No data found. Please go back to Step 2.</p>`;
+                return;
+            }
+
+            const skillsList = data.skills.split(',').map(s => `<li>${s.trim()}</li>`).join('');
+            const langList = data.languages.split(',').map(l => `<li>${l.trim()}</li>`).join('');
+            const hobbiesList = data.hobbies.split(',').map(h => `<li>${h.trim()}</li>`).join('');
+            const photoSrc = data.photo || "https://via.placeholder.com/150";
+            
+            if(data.template === 'classic') {
+                container.innerHTML = `
+                <div style="padding:40px; font-family:sans-serif; width:100%; color:#1e293b;">
+                    <div style="display:flex; justify-content:space-between; border-bottom:4px solid #1e293b; padding-bottom:20px; margin-bottom:20px;">
+                        <div>
+                            <h1 style="font-size:32px; font-weight:bold; margin:0; text-transform:uppercase;">${data.name}</h1>
+                            <h2 style="font-size:18px; color:#475569; margin:5px 0 15px 0;">${data.title}</h2>
+                            <p style="font-size:14px; margin:2px 0;">📍 ${data.address}</p>
+                            <p style="font-size:14px; margin:2px 0;">📞 ${data.phone}</p>
+                            <p style="font-size:14px; margin:2px 0;">✉️ ${data.email}</p>
+                        </div>
+                        <div>
+                            <img src="${photoSrc}" style="width:120px; height:120px; object-fit:cover; border:2px solid #cbd5e1; display:${data.photo ? 'block' : 'none'};">
+                        </div>
+                    </div>
+                    <h3 style="background:#e2e8f0; padding:5px; font-size:14px; text-transform:uppercase; margin-bottom:10px;">Professional Summary</h3>
+                    <p style="font-size:14px; margin-bottom:20px;">${data.summary}</p>
                     
-                    if(data.photo) document.getElementById('cPhoto').src = data.photo;
+                    <div style="display:flex; gap:40px; margin-bottom:20px;">
+                        <div style="width:50%;">
+                            <h3 style="background:#e2e8f0; padding:5px; font-size:14px; text-transform:uppercase; margin-bottom:10px;">Skills</h3>
+                            <ul style="font-size:14px; padding-left:20px; margin:0;">${skillsList}</ul>
+                        </div>
+                        <div style="width:50%;">
+                            <h3 style="background:#e2e8f0; padding:5px; font-size:14px; text-transform:uppercase; margin-bottom:10px;">Languages</h3>
+                            <ul style="font-size:14px; padding-left:20px; margin:0;">${langList}</ul>
+                        </div>
+                    </div>
+
+                    <h3 style="background:#e2e8f0; padding:5px; font-size:14px; text-transform:uppercase; margin-bottom:10px;">Work Experience</h3>
+                    <p style="font-size:14px; margin-bottom:20px; white-space:pre-line;">${data.experience}</p>
                     
-                    document.getElementById('cSkills').innerHTML = data.skills.split(',').map(s => `<li>${s.trim()}</li>`).join('');
-                    document.getElementById('cLang').innerHTML = data.languages.split(',').map(l => `<li>${l.trim()}</li>`).join('');
-                } else {
-                    document.getElementById('modernTemplate').classList.remove('hidden');
-                    document.getElementById('mName').innerText = data.name;
-                    document.getElementById('mTitle').innerText = data.title;
-                    document.getElementById('mAddress').innerText = data.address;
-                    document.getElementById('mPhone').innerText = data.phone;
-                    document.getElementById('mEmail').innerText = data.email;
-                    document.getElementById('mSummary').innerText = data.summary;
-                    document.getElementById('mExp').innerText = data.experience;
-                    document.getElementById('mEdu').innerText = data.edu;
+                    <h3 style="background:#e2e8f0; padding:5px; font-size:14px; text-transform:uppercase; margin-bottom:10px;">Education</h3>
+                    <p style="font-size:14px; margin-bottom:20px; white-space:pre-line;">${data.edu}</p>
                     
-                    if(data.photo) document.getElementById('mPhoto').src = data.photo;
-                    
-                    document.getElementById('mSkills').innerHTML = data.skills.split(',').map(s => `<li>${s.trim()}</li>`).join('');
-                    document.getElementById('mLang').innerHTML = data.languages.split(',').map(l => `<li>${l.trim()}</li>`).join('');
-                    document.getElementById('mHobbies').innerHTML = data.hobbies.split(',').map(h => `<li>${h.trim()}</li>`).join('');
-                }
+                    <h3 style="background:#e2e8f0; padding:5px; font-size:14px; text-transform:uppercase; margin-bottom:10px;">Hobbies</h3>
+                    <p style="font-size:14px;">${data.hobbies}</p>
+                </div>`;
+            } else {
+                container.innerHTML = `
+                <div style="display:flex; font-family:sans-serif; width:100%; min-height:800px;">
+                    <div style="width:35%; background:#1a2332; color:white; padding:40px;">
+                        <div style="text-align:center; margin-bottom:30px;">
+                            <img src="${photoSrc}" style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solid #64748b; background:white; display:${data.photo ? 'inline-block' : 'none'};">
+                        </div>
+                        <h3 style="border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:15px;">Contact</h3>
+                        <p style="font-size:12px; color:#94a3b8; font-weight:bold; margin-bottom:2px;">ADDRESS</p><p style="font-size:14px; margin-bottom:10px;">${data.address}</p>
+                        <p style="font-size:12px; color:#94a3b8; font-weight:bold; margin-bottom:2px;">PHONE</p><p style="font-size:14px; margin-bottom:10px;">${data.phone}</p>
+                        <p style="font-size:12px; color:#94a3b8; font-weight:bold; margin-bottom:2px;">EMAIL</p><p style="font-size:14px; margin-bottom:25px; word-break:break-all;">${data.email}</p>
+                        <h3 style="border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:15px;">Skills</h3>
+                        <ul style="font-size:14px; padding-left:20px; margin-bottom:25px;">${skillsList}</ul>
+                        <h3 style="border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:15px;">Languages</h3>
+                        <ul style="font-size:14px; padding-left:20px; margin-bottom:25px;">${langList}</ul>
+                        <h3 style="border-bottom:1px solid #475569; padding-bottom:5px; margin-bottom:15px;">Hobbies</h3>
+                        <ul style="font-size:14px; padding-left:20px;">${hobbiesList}</ul>
+                    </div>
+                    <div style="width:65%; padding:40px; background:white;">
+                        <h1 style="font-size:42px; font-weight:bold; text-transform:uppercase; margin:0; color:#0f172a;">${data.name}</h1>
+                        <h2 style="font-size:22px; color:#475569; margin-top:5px; margin-bottom:40px;">${data.title}</h2>
+                        <h3 style="font-size:20px; border-bottom:2px solid #e2e8f0; padding-bottom:5px; color:#1e293b; margin-bottom:10px;">Profile</h3>
+                        <p style="font-size:14px; color:#334155; line-height:1.6; margin-bottom:30px;">${data.summary}</p>
+                        <h3 style="font-size:20px; border-bottom:2px solid #e2e8f0; padding-bottom:5px; color:#1e293b; margin-bottom:10px;">Work Experience</h3>
+                        <p style="font-size:14px; color:#334155; line-height:1.6; white-space:pre-line; margin-bottom:30px;">${data.experience}</p>
+                        <h3 style="font-size:20px; border-bottom:2px solid #e2e8f0; padding-bottom:5px; color:#1e293b; margin-bottom:10px;">Education</h3>
+                        <p style="font-size:14px; color:#334155; line-height:1.6; white-space:pre-line;">${data.edu}</p>
+                    </div>
+                </div>`;
             }
         };
     </script>
